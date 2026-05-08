@@ -13,11 +13,28 @@ public static class Arrays
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person.
 
+        // DETAILED PLAN:
+        // 1. Create a new array of type double with size equal to "length".
+        //    This array will store all the multiples we generate.
+        //
+        // 2. We will use a loop that starts at index 0 and goes up to length - 1.
+        //    Each index represents the position in the result array.
+        //
+        // 3. For each index i:
+        //      - We calculate the multiplier as (i + 1)
+        //        because multiples start at 1 × number, not 0 × number.
+        //      - Multiply "number" by (i + 1)
+        //      - Store the result in array at position i
+        //
+        // 4. After the loop finishes, all positions in the array will be filled.
+        //
+        // 5. Return the completed array.
+
         var multiples = new double[length];
 
-        for (int i = 1; i <= length; i++)
+        for (int i = 0; i < length; i++)
         {
-            multiples[i-1] = number * i;
+            multiples[i] = number * (i + 1);
         }
 
         return multiples; // replace this return statement with your own
@@ -37,10 +54,40 @@ public static class Arrays
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person.
 
-        var range = data.GetRange(data.Count - amount, amount);
+        // DETAILED PLAN:
+        //
+        // 1. Understand the goal:
+        //    We want to move the last "amount" elements of the list
+        //    to the front, while keeping their original order.
+        //
+        // 2. Determine where to split the list:
+        //    We calculate the starting index of those elements:
+        //    splitIndex = total number of elements - amount
+        //    Use splitIndex = data.Count - amount
+        //
+        //    Everything from splitIndex to the end of the list
+        //    will be moved to the front.
+        //
+        // 3. Step A - Copy the last "amount" elements:
+        //    Use GetRange(splitIndex, amount)
+        //    This creates a new list containing those elements.
+        //
+        // 4. Step B - Remove those same elements from the original list:
+        //    Use RemoveRange(splitIndex, amount)
+        //    This shortens the original list.
+        //
+        // 5. Step C - Insert the saved elements at the beginning:
+        //    Use InsertRange(0, savedElements)
+        //
+        // 6. Result:
+        //    The list is now rotated to the right by "amount".
 
-        data.RemoveRange(data.Count - amount, amount);
+        int splitIndex = data.Count - amount;
 
-        data.InsertRange(0, range);
+        var savedElements = data.GetRange(splitIndex, amount);
+
+        data.RemoveRange(splitIndex, amount);
+
+        data.InsertRange(0, savedElements);
     }
 }
