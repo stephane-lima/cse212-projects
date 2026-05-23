@@ -93,13 +93,13 @@ public class PriorityQueueTests
     {
         var priorityQueue = new PriorityQueue();
 
-        priorityQueue.Enqueue("Low", 1);
-        priorityQueue.Enqueue("Medium", 5);
-        priorityQueue.Enqueue("High", 10);
+        priorityQueue.Enqueue("A", 10);
+        priorityQueue.Enqueue("B", 5);
+        priorityQueue.Enqueue("C", 20); // Highest Priority is last
 
         var result = priorityQueue.Dequeue();
 
-        Assert.AreEqual("High", result);
+        Assert.AreEqual("C", result);
     }
 
     [TestMethod]
