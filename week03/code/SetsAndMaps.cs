@@ -22,7 +22,42 @@ public static class SetsAndMaps
     public static string[] FindPairs(string[] words)
     {
         // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        var set = new HashSet<string>(words);
+        var used = new HashSet<string>();
+
+        // Store matching pairs
+        var pairs = new List<string>();
+
+        string reversed;
+
+        // Loop through each word in the set
+        foreach (string word in set)
+        {
+            char firstChar = word[0];
+            char secondChar = word[1];
+            
+            // Ignore words like "aa"
+            if (firstChar == secondChar)
+            {
+                continue;
+            }
+
+            // Reverse the current word
+            reversed = $"{secondChar}{firstChar}";
+            // reversed = new string(new[] {secondChar, firstChar});
+
+            // Check if reverse exists in the set and also check if we have not used this pair yet
+            if (set.Contains(reversed) && !used.Contains(word) && !used.Contains(reversed))
+            {
+                pairs.Add($"{reversed} & {word}");
+
+                // Mark both as used so they are never processed again
+                used.Add(word);
+                used.Add(reversed);
+            }
+        }
+
+        return pairs.ToArray();
     }
 
     /// <summary>
@@ -78,7 +113,56 @@ public static class SetsAndMaps
     public static bool IsAnagram(string word1, string word2)
     {
         // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+
+        // Remove all spaces and convert both words to lowercase
+        // so that spaces and letter case do not affect comparison
+        word1 = word1.Replace(" ", "").ToLower();
+        word2 = word2.Replace(" ", "").ToLower();
+
+        // If the words do not have the same number of letters, they cannot be anagrams
+        if (word1.Length != word2.Length)
+        {
+            return false;
+        }
+
+        // Dictionary to store each letter and the number of times it appears
+        var letterCounts = new Dictionary<char, int>();
+
+        // Go through each letter in the first word
+        // and count how many times each letter appears
+        foreach (char letter in word1)
+        {
+            if (letterCounts.ContainsKey(letter))
+            {
+                letterCounts[letter] += 1;
+            }
+            else
+            {
+                letterCounts[letter] = 1;
+            }
+        }
+
+        // Go through each letter in the second word
+        // and decrease the count for matching letters
+        foreach (char letter in word2)
+        {
+            // If the letter does not exist in the dictionary, the words cannot be anagrams
+            if (!letterCounts.ContainsKey(letter))
+            {
+                return false;
+            }
+
+            letterCounts[letter] -= 1;
+
+            // If the count goes below 0, the second word has too many of this letter
+            if (letterCounts[letter] < 0)
+            {
+                return false;
+            }
+        }
+
+        // if all letters matched correctly, the words are anagrams
+        return true;
     }
 
     /// <summary>
@@ -112,6 +196,23 @@ public static class SetsAndMaps
         // on those classes so that the call to Deserialize above works properly.
         // 2. Add code below to create a string out each place a earthquake has happened today and its magitude.
         // 3. Return an array of these string descriptions.
-        return [];
+
+        var summaries = new List<string>();
+
+        string place;
+        decimal magnitude;
+
+        foreach (var feature in featureCollection.Features)
+        {
+            // Get earthquake Location
+            place = feature.Properties.Place;
+
+            // Get earthquake Magnitude
+            magnitude = feature.Properties.Mag;
+
+            summaries.Add($"{place} - Mag {magnitude}");
+        }
+
+        return summaries.ToArray();
     }
 }
