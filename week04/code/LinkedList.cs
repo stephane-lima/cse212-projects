@@ -38,7 +38,7 @@ public class LinkedList : IEnumerable<int>
         Node newNode = new(value);
 
         // If the list is empty, then point both head and tail to the new node.
-        if (_head == null || _tail == null)
+        if (_head == null && _tail == null)
         {
             _head = newNode;
             _tail = newNode;
@@ -47,7 +47,7 @@ public class LinkedList : IEnumerable<int>
         else
         {
             newNode.Prev = _tail; // Connect new node to the previous tail
-            _tail.Next = newNode; // Connect the previous tail to the new node
+            _tail!.Next = newNode; // Connect the previous tail to the new node
             _tail = newNode; // Update the tail to point to the new node
         }
     }
@@ -146,7 +146,7 @@ public class LinkedList : IEnumerable<int>
         // head of the list.
         Node? curr = _head;
 
-        // Loop until we have reached the end
+        // Loop until it has reached the end
         while (curr is not null)
         {
             if (curr.Data == value)
@@ -170,7 +170,7 @@ public class LinkedList : IEnumerable<int>
                     curr.Prev!.Next = curr.Next; // Connect node before 'value' to the node after 'value'
                 }
 
-                return;
+                return; // We can exit the function after we remove
             }
 
             curr = curr.Next; // Go to the next node to search for "value"
@@ -184,7 +184,7 @@ public class LinkedList : IEnumerable<int>
     {
         // TODO Problem 4
 
-        // Search for the node that matches 'value' by starting at the 
+        // Search for the node that matches 'oldValue' by starting at the 
         // head of the list.
         Node? curr = _head;
 
